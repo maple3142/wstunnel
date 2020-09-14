@@ -231,11 +231,6 @@ func (t *WSTunnelClient) Start() error {
 		t.Server = strings.TrimSuffix(t.Server, "/")
 	}
 
-	// validate token and timeout
-	if t.Token == "" {
-		return fmt.Errorf("Must specify rendez-vous token using -token option")
-	}
-
 	if t.Insecure {
 		t.Log.Info("Accepting unverified SSL certs from local HTTPS servers")
 		tr := &http.Transport{
@@ -280,7 +275,7 @@ func (t *WSTunnelClient) Start() error {
 			h.Add("Origin", t.Token)
 			url := fmt.Sprintf("%s/_tunnel", t.Tunnel)
 			timer := time.NewTimer(10 * time.Second)
-			t.Log.Info("WS   Opening", "url", url, "token", t.Token[0:5]+"...")
+			t.Log.Info("WS   Opening", "url", url, "token", t.Token)
 			ws, resp, err := d.Dial(url, h)
 			if err != nil {
 				extra := ""
